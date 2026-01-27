@@ -1,0 +1,5 @@
+{
+  "name": "WorkFlow Pro: Time & Break Tracker",
+  "description": "A high-performance productivity tool to calculate total pause time, remaining login duration, and break balances. Features AI-powered data extraction and automatic Excel report generation.",
+  "requestFramePermissions": []
+}
