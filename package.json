@@ -21,6 +21,7 @@
     "@types/node": "^22.19.7",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
+    "vercel": "^50.8.1",
     "vite": "^6.2.0"
   }
 }

@@ -15,7 +15,7 @@ export const parseRawTimeData = async (text: string) => {
       const ai = new GoogleGenAI({ apiKey });
 
       const response = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.0-flash',
         contents: `You are a specialized data extractor for dialer performance reports. 
         Look at the provided text and extract these 12 specific values. 
         Note that labels and values might be squashed together.
