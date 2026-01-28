@@ -32,7 +32,6 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     if (!apiKey) {
       return res.status(500).json({ error: 'API key not configured' });
     }
-    }
 
     const ai = new GoogleGenAI({ apiKey });
 
