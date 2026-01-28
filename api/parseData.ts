@@ -2,6 +2,16 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI, Type } from "@google/genai";
 
 export default async (req: VercelRequest, res: VercelResponse) => {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -9,6 +19,7 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
   try {
     const { text } = req.body;
+    console.log('API called with text length:', text?.length);
 
     if (!text) {
       return res.status(400).json({ error: 'Text is required' });
@@ -16,8 +27,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
     // API key is kept secret in backend
     const apiKey = process.env.GEMINI_API_KEY;
+    console.log('API key configured:', !!apiKey);
+    
     if (!apiKey) {
       return res.status(500).json({ error: 'API key not configured' });
+    }
     }
 
     const ai = new GoogleGenAI({ apiKey });
@@ -78,8 +92,11 @@ export default async (req: VercelRequest, res: VercelResponse) => {
     });
 
     const result = response.candidates?.[0]?.content?.parts?.[0]?.text;
+    console.log('Gemini response received:', !!result);
+    
     if (!result) {
-      return res.status(500).json({ error: 'No response from Gemini API' });
+      console.error('No response from Gemini API. Full response:', JSON.stringify(response));
+      return res.status(500).json({ error: 'No response from Gemini API', details: JSON.stringify(response) });
     }
 
     const parsedData = JSON.parse(result);
@@ -87,9 +104,10 @@ export default async (req: VercelRequest, res: VercelResponse) => {
 
   } catch (error) {
     console.error('API Error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return res.status(500).json({ 
       error: 'Failed to parse data',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: errorMessage
     });
   }
 };

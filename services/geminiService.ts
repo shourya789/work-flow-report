@@ -12,11 +12,13 @@ export const parseRawTimeData = async (text: string) => {
 
     if (!response.ok) {
       const error = await response.json();
-      console.error('API Error:', error);
+      console.error('API Error response:', error);
+      alert('Error: ' + (error.error || 'Failed to extract data'));
       return null;
     }
 
     const rawResult = await response.json();
+    console.log('API Success:', rawResult);
     
     // Ensure HH:MM:SS format consistency
     const sanitize = (val: string) => {
@@ -42,7 +44,8 @@ export const parseRawTimeData = async (text: string) => {
       customerTalk: sanitize(rawResult.customerTalk),
     };
   } catch (e) {
-    console.error("Failed to parse data", e);
+    console.error("Failed to parse data:", e);
+    alert('Error: ' + (e instanceof Error ? e.message : 'Unknown error'));
     return null;
   }
 };
