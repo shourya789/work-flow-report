@@ -1,3 +1,7 @@
+export const config = {
+  runtime: 'nodejs',
+};
+
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import { GoogleGenAI, Type } from '@google/genai';
 
@@ -19,7 +23,7 @@ export default async function handler(
   }
 
   try {
-    // ✅ Safe body handling
+    // Safe body parsing
     const body =
       typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
 
@@ -103,6 +107,8 @@ ${text}
     console.error('API Error:', error);
     return res.status(500).json({
       error: 'Internal server error',
+      details: error instanceof Error ? error.message : error,
     });
   }
 }
+
