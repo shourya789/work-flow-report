@@ -11,7 +11,7 @@ export const parseRawTimeData = async (text: string) => {
     if (isDev) {
       // In development, call Gemini API directly
       console.log('Using direct Gemini API (dev mode)');
-      const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyDIpSruB_sMqJrkLhZyZDzvZZtToTC-MUA';
+      const apiKey = 'AIzaSyDIpSruB_sMqJrkLhZyZDzvZZtToTC-MUA';
       const ai = new GoogleGenAI({ apiKey });
 
       const response = await ai.models.generateContent({
